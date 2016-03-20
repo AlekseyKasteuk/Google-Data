@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - google_data@localhost" uuid="1d01ff78-329d-4687-9205-dacfdefb4508">
+      <secret-storage>memory</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>google_data.*</schema-pattern>
+      <default-schemas>google_data.*</default-schemas>
+    </data-source>
+  </component>
+</project>

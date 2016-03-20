@@ -1,0 +1,32 @@
+{
+  "name": "google-data",
+  "homepage": "https://github.com/AlekseyKasteuk/Google-Data",
+  "authors": [
+    "Alexey Kastyuk <alexey.kastyuk@waveoc.com>"
+  ],
+  "description": "Work with google data",
+  "main": "index.js",
+  "moduleType": [],
+  "keywords": [
+    "google",
+    "calendar",
+    "tasks",
+    "messages",
+    "angular",
+    "material",
+    "design"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.1",
+    "angular-material": "^1.0.6",
+    "angular-ui-router": "^0.2.18"
+  }
+}
