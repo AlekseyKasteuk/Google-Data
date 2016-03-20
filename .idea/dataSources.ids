@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - google_data@localhost" uuid="1d01ff78-329d-4687-9205-dacfdefb4508">
+    <database-info product="MySQL" version="5.7.9" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
+      <schema id="1" name="google_data"/>
+      <table id="2" parent="1" name="Calendar"/>
+      <table id="3" parent="1" name="Configuration"/>
+      <table id="4" parent="1" name="Event"/>
+      <table id="5" parent="1" name="External_Account"/>
+      <table id="6" parent="1" name="External_Service"/>
+      <table id="7" parent="1" name="Task"/>
+      <table id="8" parent="1" name="Task_List"/>
+      <table id="9" parent="1" name="Task_Status"/>
+      <table id="10" parent="1" name="User"/>
+      <table id="11" parent="1" name="User_has_Calendar"/>
+      <table id="12" parent="1" name="sessions"/>
+      <column id="13" parent="2" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="14" parent="2" name="owner_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="15" parent="2" name="name">
+        <mandatory>1</mandatory>
+        <data-type>varchar(256)</data-type>
+      </column>
+      <column id="16" parent="2" name="color">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <index id="17" parent="2" name="fk_Calendar_User1_idx">
+        <columns>owner_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="18" parent="2" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="19" parent="2" name="fk_Calendar_User1">
+        <columns>owner_id</columns>
+        <ref-key>~.User.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="20" parent="3" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="21" parent="3" name="redirect_url">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <column id="22" parent="3" name="api_key">
+        <data-type>varchar(45)</data-type>
+      </column>
+      <column id="23" parent="3" name="client_id">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <column id="24" parent="3" name="client_secret">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <column id="25" parent="3" name="external_service_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="26" parent="3" name="fk_Configuration_External_Service1_idx">
+        <columns>external_service_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="27" parent="3" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="28" parent="3" name="fk_Configuration_External_Service1">
+        <columns>external_service_id</columns>
+        <ref-key>~.External_Service.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="29" parent="4" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="30" parent="4" name="color">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <column id="31" parent="4" name="title">
+        <mandatory>1</mandatory>
+        <data-type>varchar(256)</data-type>
+      </column>
+      <column id="32" parent="4" name="description">
+        <data-type>varchar(2048)</data-type>
+      </column>
+      <column id="33" parent="4" name="rrule">
+        <data-type>varchar(256)</data-type>
+      </column>
+      <column id="34" parent="4" name="calendar_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="35" parent="4" name="created_date">
+        <mandatory>1</mandatory>
+        <data-type>datetime</data-type>
+      </column>
+      <index id="36" parent="4" name="fk_Event_Calendar1_idx">
+        <columns>calendar_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="37" parent="4" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="38" parent="4" name="fk_Event_Calendar1">
+        <columns>calendar_id</columns>
+        <ref-key>~.Calendar.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="39" parent="5" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="40" parent="5" name="access_token">
+        <mandatory>1</mandatory>
+        <data-type>varchar(256)</data-type>
+      </column>
+      <column id="41" parent="5" name="refresh_token">
+        <mandatory>1</mandatory>
+        <data-type>varchar(256)</data-type>
+      </column>
+      <column id="42" parent="5" name="user_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="43" parent="5" name="external_service_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="44" parent="5" name="fk_External_Account_External_Service1_idx">
+        <columns>external_service_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="45" parent="5" name="fk_Google_Account_User_idx">
+        <columns>user_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="46" parent="5" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="47" parent="5" name="fk_External_Account_External_Service1">
+        <columns>external_service_id</columns>
+        <ref-key>~.External_Service.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="48" parent="5" name="fk_Google_Account_User">
+        <columns>user_id</columns>
+        <ref-key>~.User.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="49" parent="6" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="50" parent="6" name="name">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <index id="51" parent="6" name="name_UNIQUE">
+        <columns>name</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="52" parent="6" name="name_UNIQUE">
+        <columns>name</columns>
+        <underlying-index>name_UNIQUE</underlying-index>
+      </key>
+      <key id="53" parent="6" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <column id="54" parent="7" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="55" parent="7" name="task_list_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="56" parent="7" name="name">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <index id="57" parent="7" name="fk_Task_Task_List1_idx">
+        <columns>task_list_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="58" parent="7" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="59" parent="7" name="fk_Task_Task_List1">
+        <columns>task_list_id</columns>
+        <ref-key>~.Task_List.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="60" parent="8" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="61" parent="8" name="name">
+        <mandatory>1</mandatory>
+        <data-type>varchar(256)</data-type>
+      </column>
+      <column id="62" parent="8" name="user_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="63" parent="8" name="fk_Task_List_User1_idx">
+        <columns>user_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="64" parent="8" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="65" parent="8" name="fk_Task_List_User1">
+        <columns>user_id</columns>
+        <ref-key>~.User.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="66" parent="9" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="67" parent="9" name="task_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="68" parent="9" name="name">
+        <mandatory>1</mandatory>
+        <data-type>varchar(45)</data-type>
+      </column>
+      <index id="69" parent="9" name="fk_task_status_Task1_idx">
+        <columns>task_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="70" parent="9" name="name_UNIQUE">
+        <columns>name</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="71" parent="9" name="name_UNIQUE">
+        <columns>name</columns>
+        <underlying-index>name_UNIQUE</underlying-index>
+      </key>
+      <key id="72" parent="9" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="73" parent="9" name="fk_task_status_Task1">
+        <columns>task_id</columns>
+        <ref-key>~.Task.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="74" parent="10" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="75" parent="10" name="username">
+        <mandatory>1</mandatory>
+        <data-type>varchar(100)</data-type>
+      </column>
+      <column id="76" parent="10" name="password">
+        <mandatory>1</mandatory>
+        <data-type>varchar(64)</data-type>
+      </column>
+      <index id="77" parent="10" name="user_username_UNIQUE">
+        <columns>username</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="78" parent="10" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <key id="79" parent="10" name="user_username_UNIQUE">
+        <columns>username</columns>
+        <underlying-index>user_username_UNIQUE</underlying-index>
+      </key>
+      <column id="80" parent="11" name="user_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="81" parent="11" name="calendar_id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="82" parent="11" name="fk_User_has_Calendar_Calendar1_idx">
+        <columns>calendar_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="83" parent="11" name="fk_User_has_Calendar_User1_idx">
+        <columns>user_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="84" parent="11" name="PRIMARY">
+        <columns>user_id
+calendar_id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="85" parent="11" name="fk_User_has_Calendar_Calendar1">
+        <columns>calendar_id</columns>
+        <ref-key>~.Calendar.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="86" parent="11" name="fk_User_has_Calendar_User1">
+        <columns>user_id</columns>
+        <ref-key>~.User.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="87" parent="12" name="session_id">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="88" parent="12" name="expires">
+        <mandatory>1</mandatory>
+        <data-type>int(11) unsigned</data-type>
+      </column>
+      <column id="89" parent="12" name="data">
+        <data-type>text</data-type>
+      </column>
+      <key id="90" parent="12" name="PRIMARY">
+        <columns>session_id</columns>
+        <primary>1</primary>
+      </key>
+    </database-model>
+  </data-source>
+</component>
