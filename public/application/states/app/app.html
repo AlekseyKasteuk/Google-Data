@@ -1,4 +1,25 @@
-<div ng-click="test()">LogIn</div>
-<div ng-click="test2()">LogOut</div>
-<div ng-click="test3()">test</div>
-<div ng-click="test4()">test2</div>
+<!--<div ng-click="test()">LogIn</div>-->
+<!--<div ng-click="test3()">test</div>-->
+<!--<div ng-click="test4()">test2</div>-->
+
+<!--<form method="post" style="position: fixed; bottom: 0; right: 0;">-->
+  <!--<textarea ui-tinymce="tinymceOptions" style="resize: none;" ng-model="tinymceModel"></textarea>-->
+<!--</form>-->
+
+<div layout="column" flex>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h1>Google Data</h1>
+            <span flex></span>
+            <span layout="row" layout-align="center center">
+                <a>
+                    <md-tooltip md-direction="left">
+                        {{ authorizedUser.first_name + ' ' + authorizedUser.last_name }}
+                    </md-tooltip>
+                    <img ng-src="{{ authorizedUser.avatar_url }}" style="width: 48px; border-radius: 50%;">
+                </a>
+                <md-button ng-click="logout()">Logout</md-button>
+            </span>
+        </div>
+    </md-toolbar>
+</div>

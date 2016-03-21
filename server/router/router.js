@@ -26,9 +26,11 @@ var checkAuthorization = function (sessionID, callback, data) {
 
 router.post('/login', require('./routes/authorization').login);
 router.post('/logout', require('./routes/authorization').logout);
+router.get('/auth/check', require('./routes/authorization').checkLoginRest);
+router.post('/create/account', require('./routes/authorization').createNewAccount)
 
-router.get('/google', require('./routes/authorization').googleGetUrl);
-router.get('/google/authorization', require('./routes/authorization').googleAccessToken)
+router.get('/google', require('./routes/google_data').bind(null, 'googleGetUrl'));
+router.get('/google/authorization', require('./routes/google_data').bind(null, 'googleAccessToken'));
 
 module.exports = {
     socket: function (server) {

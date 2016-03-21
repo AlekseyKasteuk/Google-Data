@@ -7,8 +7,7 @@ var connection = require('./connection');
 var encryption = require('./encryption');
 
 passport.use(new LocalStrategy(function (username, password, done) {
-	var pass = password;
-	//console.log('Login', username, password, pass);
+	var pass = encryption(password);
 	var query = "SELECT username, password FROM User " +
 				"WHERE username='" + username +
 				"' AND password='" + pass + "' LIMIT 1";

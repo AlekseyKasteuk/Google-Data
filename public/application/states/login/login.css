@@ -1,0 +1,13 @@
+#login-form {
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+#login-form md-input-container {
+    margin-top: 0;
+}
+
+.create-account md-input-container {
+    margin: 0;
+}

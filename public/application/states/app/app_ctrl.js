@@ -1,23 +1,31 @@
 /**
  * Created by alexeykastyuk on 3/19/16.
  */
-app.controller('AppCtrl', ['$scope', 'socket', '$http', '$window', function ($scope, socket, $http, $window) {
-    $scope.name = 'Alexey'
-    $scope.test = function () {
-        $http.post('/login', {username: 'alex', password: 'alexey22'})
-        //socket.emit('login', {username: 'alex', password: 'alexey22'});
-    }
-    $scope.test2 = function () {
-        $http.post('/logout');
-        //socket.emit('logout')
-    }
-    $scope.test3 = function () {
-        socket.emit('test');
-    }
-    $scope.test4 = function () {
-        $window.location.href = '/google';
-    }
-    socket.on('authorization_faild', function (data) {
-        console.log('authorization_faild',data);
+app.controller('AppCtrl', ['$scope', 'socket', '$state', 'authService', function ($scope, socket, $state, authService) {
+    $scope.logout = function () {
+        authService.logout().success(function () {
+            $state.go('login');
+        });
+    };
+    socket.on('authorization_faild', function () {
+        $state.go('login');
     })
+
+    $scope.tinymceOptions = {
+        onChange: function(e) {
+            console.log(e);
+        },
+        inline: false,
+        plugins : [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks fullscreen media',
+            'insertdatetime table contextmenu paste'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        skin: 'lightgray',
+        theme : 'modern',
+        statusbar: false,
+        width: 450,
+        height: 455
+    };
 }]);

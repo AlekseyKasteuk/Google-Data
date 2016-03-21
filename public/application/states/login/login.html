@@ -1,0 +1,32 @@
+<div layout="column" layout-align="center center" flex style="background-color: #f5f5f5">
+    <form layout="column" id="login-form" class="md-padding" ng-submit="login()">
+        <h1>Welcom Google Data</h1>
+
+        <md-input-container class="md-block">
+            <label>Username</label>
+            <md-icon md-font-icon="fa fa-2x fa-user"></md-icon>
+            <input ng-model="user.username" name="username" ng-pattern="/^[\w\._\-]{6,64}$/" minlength="6" maxlength="64" required>
+            <div ng-messages="user.username.$error" role="alert">
+                <div ng-message="required">Username is required</div>
+                <div ng-message="min">Username should be more then 6 characters.</div>
+                <div ng-message="max">Username should be less then 64 characters.</div>
+                <div ng-message="pattern">
+                    Username should contains of letters or ._- characters.
+                </div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Password</label>
+            <md-icon md-font-icon="fa fa-2x fa-lock"></md-icon>
+            <input ng-model="user.password" type="password" name="password" minlength="8" maxlength="64" required ng-pattern="/^[\w\._\-!\?,#\$\^&@]{8,64}$/">
+            <div ng-messages="user.passport.$error">
+                <div ng-message="required">Password is required</div>
+                <div ng-message="min">Password should be more then 8 characters.</div>
+                <div ng-message="max">Password should be less then 64 characters.</div>
+                <div ng-message="pattern">Password should contains only letters or ._-!?,#$^&@ characters.</div>
+            </div>
+        </md-input-container>
+        <md-button class="md-raised md-primary" type="submit">Login</md-button>
+        <md-button class="md-raised md-primary" ng-click="showAlert($event);">Create new account</md-button>
+    </form>
+</div>
