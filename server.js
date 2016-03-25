@@ -53,5 +53,5 @@ app.all('*', function(req, res, next) {
     next();
 });
 app.use(errorHandler);
-app.use('/', routes.http);
+app.use('/', require('./server/router/routes/authorization').loginCheck, routes.http);
 

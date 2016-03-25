@@ -8,5 +8,6 @@ module.exports = {
 		password : '',
 		database: 'google_data',
 		multipleStatements: true
-	}
+	},
+	profile_redirect_url: '/#/profile'
 }

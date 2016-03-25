@@ -12,14 +12,15 @@
             <h1>Google Data</h1>
             <span flex></span>
             <span layout="row" layout-align="center center">
-                <a>
+                <a ui-sref="app.profile">
                     <md-tooltip md-direction="left">
                         {{ authorizedUser.first_name + ' ' + authorizedUser.last_name }}
                     </md-tooltip>
-                    <img ng-src="{{ authorizedUser.avatar_url }}" style="width: 48px; border-radius: 50%;">
+                    <img ng-src="{{ authorizedUser.avatar_url }}" id="current-user-avatar" style="width: 48px; border-radius: 50%;">
                 </a>
                 <md-button ng-click="logout()">Logout</md-button>
             </span>
         </div>
     </md-toolbar>
+    <div ui-view layout="row" flex></div>
 </div>

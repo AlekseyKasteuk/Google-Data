@@ -5,7 +5,9 @@ var app = angular.module('GoogleData', [
     'ui.router',
     'ui.tinymce',
     'ngMaterial',
-    'ngMessages'
+    'ngMessages',
+    'ngFileUpload',
+    'ngImgCrop'
 ]);
 
 app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationProvider', '$mdIconProvider', '$mdThemingProvider', function($httpProvider, $urlRouterProvider, $stateProvider, $locationProvider, $mdIconProvider, $mdThemingProvider) {
@@ -25,6 +27,11 @@ app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationP
             url: '/',
             templateUrl: 'application/states/app/app.html',
             controller: 'AppCtrl'
+        })
+        .state('app.profile', {
+            url: 'profile',
+            templateUrl: 'application/states/app/profile/profile.html',
+            controller: 'ProfileCtrl'
         })
 
     $mdThemingProvider.theme('default').primaryPalette('blue').accentPalette('indigo');

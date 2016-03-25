@@ -6,6 +6,7 @@ var google = require('googleapis');
 var plus = google.plus('v1');
 var gmail = google.gmail('v1');
 var OAuth2Client = google.auth.OAuth2;
+var profileRedirectUrl = require('../config').profile_redirect_url;
 var query = 'SELECT client_id, client_secret, redirect_url FROM googlecredentials';
 
 module.exports = {
@@ -39,13 +40,13 @@ module.exports = {
 
         connection.query(query, function (err, data) {
             if (err || !data) {
-                callback(null, '/#/configuration_error');
+                callback(null, profileRedirectUrl);
             }
             data = data[0]
             var oauth2Client = new OAuth2Client(data.client_id, data.client_secret, data.redirect_url);
             oauth2Client.getToken(code, function(err, tokens) {
                 if (err || !tokens) {
-                    callback(null, '/#/configuration_error');
+                    callback(null, profileRedirectUrl);
                 }
                 // insert access_token, refresh_token
                 oauth2Client.setCredentials({
@@ -56,10 +57,10 @@ module.exports = {
                 console.log(tokens);
                 oauth2Client.refreshAccessToken(function(err, tokens) {
                     if (err || !tokens) {
-                        callback(null, '/#/configuration_error');
+                        callback(null, profileRedirectUrl);
                     }
                     console.log(tokens);
-                    callback(null, '/#/profile')
+                    callback(null, profileRedirectUrl)
                 });
             });
         });

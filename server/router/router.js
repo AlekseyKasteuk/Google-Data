@@ -7,6 +7,9 @@ var SessionStore = require('express-mysql-session');
 var cookieParser = require('cookie-parser');
 var passport = require('../utiles/local_auth');
 var passportSocketIo = require("passport.socketio");
+var multipartMiddleware = require('connect-multiparty')({
+    uploadDir: __dirname + '/../../public/avatars'
+});
 var empty = function () {}
 
 var checkAuthorization = function (sessionID, callback, data) {
@@ -27,10 +30,12 @@ var checkAuthorization = function (sessionID, callback, data) {
 router.post('/login', require('./routes/authorization').login);
 router.post('/logout', require('./routes/authorization').logout);
 router.get('/auth/check', require('./routes/authorization').checkLoginRest);
-router.post('/create/account', require('./routes/authorization').createNewAccount)
+router.post('/create/account', require('./routes/authorization').createNewAccount);
+router.get('/user/info', require('./routes/profile').getUserInfo);
+router.post('/profile/avatar', multipartMiddleware, require('./routes/profile').setAvatar);
 
-router.get('/google', require('./routes/google_data').bind(null, 'googleGetUrl'));
-router.get('/google/authorization', require('./routes/google_data').bind(null, 'googleAccessToken'));
+//router.get('/google', require('./routes/google_data').googleGetUrl);
+//router.get('/google/authorization', require('./routes/google_data').googleAccessToken);
 
 module.exports = {
     socket: function (server) {

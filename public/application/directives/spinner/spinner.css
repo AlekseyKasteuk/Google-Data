@@ -1,0 +1,16 @@
+spinner div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+}
+
+spinner div md-progress-circular {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -48px;
+    margin-left: -48px;
+}

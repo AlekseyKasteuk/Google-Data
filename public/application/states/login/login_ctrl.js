@@ -18,7 +18,7 @@ app.controller('LoginCtrl', ['$scope', 'authService', '$mdDialog', '$state', '$m
     $scope.showAlert = function (event) {
         $mdDialog.show({
             controller: 'createNewAccountCtrl',
-            templateUrl: 'application/states/login/create_new_account.html',
+            templateUrl: 'application/modal_dialogs/create_new_account/create_new_account.html',
             parent: angular.element(document.body),
             targetEvent: event,
             clickOutsideToClose: true,
@@ -32,22 +32,4 @@ app.controller('LoginCtrl', ['$scope', 'authService', '$mdDialog', '$state', '$m
                 .position('top left'));
         });
     }
-}])
-
-.controller('createNewAccountCtrl', ['$scope', '$mdDialog', 'authService', function ($scope, $mdDialog, authService) {
-    $scope.user = {}
-    $scope.hide = function() {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function() {
-        $mdDialog.cancel();
-    };
-    $scope.answer = function() {
-        authService.createNewAccount($scope.user).success(function () {
-            $mdDialog.hide($scope.user.first_name + ' ' + $scope.user.last_name);
-        }).error(function () {
-
-        })
-        //$mdDialog.hide();
-    };
 }]);

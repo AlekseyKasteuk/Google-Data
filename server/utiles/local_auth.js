@@ -14,6 +14,7 @@ passport.use(new LocalStrategy(function (username, password, done) {
 
 	connection.query(query, function (err, user) {
 		if (err) { return  done(null, false, { message: 'Database error.' }); }
+		if (user.length) { user[0].password = password }
 		return user.length == 0
 				? done(null, false, { message: 'Check username or password.' })
 				: done(null, user[0]);

@@ -25,7 +25,7 @@ module.exports.login = function (req, res, next) {
 module.exports.checkLogin = function (user) {
 	try {
 		var query = "SELECT id FROM User WHERE username = ? AND password = ? LIMIT 1";
-		connection.query(query, [user.username, user.password], function(err, user) {
+		connection.query(query, [user.username, encryption(user.password)], function(err, user) {
 			if (err || !user.length) { throw new Error('No user'); }
 		})
 	} catch (e) {
@@ -37,15 +37,33 @@ module.exports.checkLogin = function (user) {
 
 module.exports.checkLoginRest = function (req, res, next) {
 	try {
-		console.log(req.session)
+		console.log(req.session);
 		var query = "SELECT first_name, last_name, username, birth_date, avatar_url FROM User WHERE username = ? AND password = ? LIMIT 1";
-		connection.query(query, [req.session.passport.user.username, req.session.passport.user.password], function(err, user) {
-			if (err || !user.length) { throw new Error('No user'); }
+		connection.query(query, [req.session.passport.user.username, encryption(req.session.passport.user.password)], function(err, user) {
+			if (err || !user.length) { return next(); }
 			user = user[0];
 			if (!user.avatar_url) { user.avatar_url = "/avatars/unknown_user.gif" }
 			res.status(200).send(user);
 		})
 	} catch (e) {
+		res.status(401).send('Authorization failed');
+	}
+};
+
+module.exports.loginCheck = function (req, res, next) {
+	try {
+		var query = "SELECT id FROM User WHERE username = ? AND password = ? LIMIT 1";
+		connection.query(query, [req.session.passport.user.username, encryption(req.session.passport.user.password)], function(err, user) {
+			if (err || !user) { return res.status(400).send('Server error') }
+			if (!user.length && req.url != '/login') {
+				return res.status(401).send('Authorization failed.');
+			}
+			return next();
+		})
+	} catch (e) {
+		if (req.url == '/login') {
+			return next()
+		}
 		res.status(401).send('Authorization failed');
 	}
 };

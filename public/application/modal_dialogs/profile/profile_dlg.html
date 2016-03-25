@@ -1,0 +1,25 @@
+<md-dialog aria-label="Profile information" ng-cloak>
+    <form>
+        <div class="md-toolbar-tools md-whiteframe-2dp">
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon md-font-icon="fa fa-times" aria-label="Close dialog"></md-icon>
+            </md-button>
+            <span flex></span>
+            <md-button class="md-primary" ngf-select ng-model="picFile" accept="image/*">SELECT</md-button>
+            <md-button class="md-primary" ng-click="upload(croppedDataUrl, picFile.name)">DONE</md-button>
+        </div>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <form name="myForm">
+                    <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+                        class="cropArea">
+                        <img-crop image="picFile  | ngfDataUrl"
+                            result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+                        </img-crop>
+                    </div>
+                </form>
+            </div>
+        </md-dialog-content>
+    </form>
+    <spinner ng-if="enableSpinner"></spinner>
+</md-dialog>

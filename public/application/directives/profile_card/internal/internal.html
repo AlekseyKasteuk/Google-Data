@@ -1,0 +1,48 @@
+<div class="profile-container">
+    <div class="profile-background" style="position: relative; background-image: url('/img/default_cover.jpg')">
+        <md-button class="md-icon-button" style="position: absolute; top: 10px; right: 10px;">
+            <md-icon md-font-icon="fa fa-google" style="font-size: 20px; color: white;" ng-click="changeProfileType('Google');"></md-icon>
+        </md-button>
+    </div>
+    <div>
+        <span class="profile-user-avatar">
+            <div class="avatar-hover" ng-click="selectAvatar();">
+                <md-button class="md-icon-button">
+                    <md-icon md-font-icon="fa fa-camera"></md-icon>
+                </md-button>
+            </div>
+            <img ng-src="{{user.info.avatar_url}}" aria-label="Profile's photo">
+        </span>
+    </div>
+    <div class="profile-user-name">{{user.info.first_name + ' ' + user.info.last_name}}</div>
+    <div class="profile-user-name">{{user.info.email}}</div>
+</div>
+<div layout="column" flex>
+    <div layout="row" flex layout-align="space-around center">
+        <div flex layout="row" layout-align="center center">
+            <md-input-container>
+                <label>First name</label>
+                <input>
+            </md-input-container>
+        </div>
+        <div flex layout="row" layout-align="center center">
+            <md-input-container>
+                <label>Last name</label>
+                <input>
+            </md-input-container>
+        </div>
+    </div>
+    <div layout="row" flex layout-align="space-around center">
+        <div flex layout="row" layout-align="center center">
+            <!--<md-select>-->
+                <!--<md-option ng-repeat="i in new Array(100)" ng-value="i">{{i}}</md-option>-->
+            <!--</md-select>-->
+        </div>
+        <div flex layout="row" layout-align="center center">
+            <md-input-container>
+                <label>Email</label>
+                <input>
+            </md-input-container>
+        </div>
+    </div>
+</div>
