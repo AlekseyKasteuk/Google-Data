@@ -1,12 +1,22 @@
 /**
  * Created by alexeykastyuk on 3/25/16.
  */
-app.directive('profileCardInternal', ['$mdDialog', function($mdDialog) {
+app.directive('profileCardInternal', ['$mdDialog', 'profileService', function($mdDialog, profileService) {
     return {
         restrict: 'A',
         scope: false,
         templateUrl: '/application/directives/profile_card/internal/internal.html',
         link: function ($scope, element) {
+
+            function getInfo() {
+                profileService.getProfileInfo('internal').success(function (user) {
+                    $scope.user = user;
+                }).error(function () {
+
+                });
+            }
+
+            getInfo();
 
             $scope.selectAvatar = function () {
                 $mdDialog.show({

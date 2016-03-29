@@ -15,6 +15,7 @@
     "express": "~4.13.1",
     "express-mysql-session": "^0.4.3",
     "express-session": "^1.12.1",
+    "google-batch": "0.0.7",
     "googleapis": "^3.1.0",
     "gulp": "^3.9.1",
     "gulp-express": "^0.3.5",

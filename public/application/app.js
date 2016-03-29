@@ -29,16 +29,35 @@ app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationP
             controller: 'AppCtrl'
         })
         .state('app.profile', {
-            url: 'profile',
+            url: 'profile?account',
             templateUrl: 'application/states/app/profile/profile.html',
             controller: 'ProfileCtrl'
         })
+        .state('app.messages', {
+            url: 'messages?labels',
+            templateUrl: 'application/states/app/messages/messages.html',
+            controller: 'MessageCtrl'
+        });
 
     $mdThemingProvider.theme('default').primaryPalette('blue').accentPalette('indigo');
 }]);
 
 
 app.run(['$rootScope', '$state', '$stateParams', 'authService', function ($rootScope, $state, $stateParams, authService) {
+    $rootScope.getRange = function (type, configs) {
+        console.log(type, configs);
+        configs = !!configs ? configs : {};
+        if (type == 'birth year') {
+            return _.range(moment().year(), moment().year() - 120);
+        }
+        if (type == 'birth month') {
+            return moment.months();
+        }
+        if (type == 'birth date' && !!configs.year && !!configs.month) {
+            return _.range(1, moment().year(configs.year).month(configs.month).daysInMonth() + 1);
+        }
+        return [];
+    };
 	$rootScope.$on('$stateChangeStart', function (evt, to, params) {
         authService.checkAuth().success(function (user) {
             $rootScope.authorizedUser = user;

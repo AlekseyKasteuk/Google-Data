@@ -1,18 +1,19 @@
 /**
  * Created by alexeykastyuk on 3/25/16.
  */
-app.directive('profileCard', ['profileService', '$timeout', function(profileService, $timeout) {
+app.directive('profileCard', ['profileService', '$timeout', '$stateParams', function(profileService, $timeout, $stateParams) {
     return {
         restrict: 'A',
         scope: {},
         templateUrl: '/application/directives/profile_card/profile_card.html',
         link: function ($scope, element) {
+            var type = $stateParams.account ? $stateParams.account : 'internal';
             $scope.profile = {
-                type: 'Internal'
+                type: type
             };
             element.bind("animationend", function () {
                 element.removeClass('rotated-profile-card')
-            })
+            });
             $scope.changeProfileType = function (name) {
                 element.addClass('rotated-profile-card');
                 $timeout(function () {
@@ -20,16 +21,6 @@ app.directive('profileCard', ['profileService', '$timeout', function(profileServ
                 }, 500);
 
             };
-            function getInfo() {
-                profileService.getFullInformation().success(function (user) {
-                    console.log(user);
-                    $scope.user = user;
-                }).error(function () {
-
-                });
-            }
-
-            getInfo();
         }
     }
 }])

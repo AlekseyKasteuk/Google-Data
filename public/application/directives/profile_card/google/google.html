@@ -1,19 +1,41 @@
 <div class="profile-container">
     <div class="profile-background" style="position: relative; background-image: url('/img/default_cover.jpg')">
         <md-button class="md-icon-button" style="position: absolute; top: 10px; right: 10px;">
-            <md-icon md-font-icon="fa fa-user" style="font-size: 20px; color: white;" ng-click="changeProfileType('Internal');"></md-icon>
+            <md-icon md-font-icon="fa fa-user" style="font-size: 20px; color: white;" ng-click="changeProfileType('internal');"></md-icon>
         </md-button>
     </div>
     <div>
         <span class="profile-user-avatar">
-            <div class="avatar-hover" ng-click="selectAvatar();">
+            <div class="avatar-hover" ng-click="addNewGoogleAccount();">
                 <md-button class="md-icon-button">
-                    <md-icon md-font-icon="fa fa-camera"></md-icon>
+                    <md-icon md-font-icon="fa fa-user-plus"></md-icon>
                 </md-button>
             </div>
-            <img ng-src="{{user.info.avatar_url}}" aria-label="Profile's photo">
+            <img ng-src="{{currentUser.avatar ? currentUser.avatar : '/avatars/unknown_user.gif'}}" aria-label="Profile's photo" ng-cloak>
         </span>
     </div>
-    <div class="profile-user-name">{{user.info.first_name + ' ' + user.info.last_name}}</div>
-    <div class="profile-user-name">{{user.info.email}}</div>
+    <div class="profile-user-name">{{currentUser.displayName}}
+        <span style="font-style: italic; font-weight: 100;" ng-if="!!currentUser.email">{{ '(' + currentUser.email + ')' }}</span>
+    </div>
+</div>
+<div>
+    <h2 class="md-title">Select google account</h2>
+    <md-radio-group ng-model="currentUser" ng-change="currentUserChange">
+        <md-list>
+            <md-list-item class="md-2-line md-whiteframe-1dp" ng-repeat="user in users" flex>
+                <md-radio-button ng-value="user" flex>
+                    <div layout="row" flex>
+                        <img ng-src="{{user.avatar}}" class="md-avatar" alt="{{user.displayName}}" />
+                        <div class="md-list-item-text" layout="column" flex>
+                            <h3>{{ user.displayName }}</h3>
+                            <h4>{{ user.email }}</h4>
+                        </div>
+                    </div>
+                </md-radio-button>
+                <div layout="column" style="width: 30px; height: 55px; font-size: 25px;">
+                    <md-icon md-font-icon="fa fa-trash"></md-icon>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-radio-group>
 </div>

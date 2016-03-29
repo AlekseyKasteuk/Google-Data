@@ -3,8 +3,12 @@
  */
 app.factory('profileService', ['$http', function ($http) {
     return {
-        getFullInformation: function () {
-            return $http.get('/user/info');
+        getProfileInfo: function (name) {
+            return $http.get('/user/info?profile=' + name);
+        },
+        updateCurrentGoogleAccount: function (id) {
+            console.log(id);
+            return $http.put('/google/update', {id : id});
         }
     }
 }])

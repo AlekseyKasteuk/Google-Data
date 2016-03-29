@@ -31,11 +31,15 @@ router.post('/login', require('./routes/authorization').login);
 router.post('/logout', require('./routes/authorization').logout);
 router.get('/auth/check', require('./routes/authorization').checkLoginRest);
 router.post('/create/account', require('./routes/authorization').createNewAccount);
-router.get('/user/info', require('./routes/profile').getUserInfo);
+router.get('/user/info', require('./routes/profile').getUserProfile);
 router.post('/profile/avatar', multipartMiddleware, require('./routes/profile').setAvatar);
 
-//router.get('/google', require('./routes/google_data').googleGetUrl);
-//router.get('/google/authorization', require('./routes/google_data').googleAccessToken);
+router.get('/google', require('./routes/profile').googleGetUrl);
+router.put('/google/update', require('./routes/profile').googleUpdateCurrentUser);
+router.get('/google/authorization', require('./routes/profile').googleAccessToken);
+
+router.post('/google/message/threads', require('./routes/google_data').getMessageThreads);
+router.get('/google/message/labels', require('./routes/google_data').getMessageLabels);
 
 module.exports = {
     socket: function (server) {
