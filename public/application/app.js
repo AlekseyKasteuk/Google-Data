@@ -7,7 +7,8 @@ var app = angular.module('GoogleData', [
     'ngMaterial',
     'ngMessages',
     'ngFileUpload',
-    'ngImgCrop'
+    'ngImgCrop',
+    'ui.calendar'
 ]);
 
 app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationProvider', '$mdIconProvider', '$mdThemingProvider', function($httpProvider, $urlRouterProvider, $stateProvider, $locationProvider, $mdIconProvider, $mdThemingProvider) {
@@ -36,7 +37,17 @@ app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationP
         .state('app.messages', {
             url: 'messages?labels',
             templateUrl: 'application/states/app/messages/messages.html',
+            controller: 'MessagesCtrl'
+        })
+        .state('app.message', {
+            url: 'messages/:id',
+            templateUrl: 'application/states/app/messages/id/message.html',
             controller: 'MessageCtrl'
+        })
+        .state('app.calendar', {
+            url: 'calendar',
+            templateUrl: 'application/states/app/calendar/calendar.html',
+            controller: 'CalendarCtrl'
         });
 
     $mdThemingProvider.theme('default').primaryPalette('blue').accentPalette('indigo');
@@ -61,7 +72,7 @@ app.run(['$rootScope', '$state', '$stateParams', 'authService', function ($rootS
 	$rootScope.$on('$stateChangeStart', function (evt, to, params) {
         authService.checkAuth().success(function (user) {
             $rootScope.authorizedUser = user;
-            console.log(user);
+
 			if(to.name == 'login') {
 				$state.go('app');
 			}

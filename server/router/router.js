@@ -10,7 +10,11 @@ var passportSocketIo = require("passport.socketio");
 var multipartMiddleware = require('connect-multiparty')({
     uploadDir: __dirname + '/../../public/avatars'
 });
-var empty = function () {}
+var empty = function () {};
+
+var authModule = require('./routes/authorization');
+var profileModule = require('./routes/profile');
+var googleDataModule = require('./routes/google_data');
 
 var checkAuthorization = function (sessionID, callback, data) {
     new SessionStore(configs.database)
@@ -19,7 +23,7 @@ var checkAuthorization = function (sessionID, callback, data) {
                 socket.emit('authorization_faild', 'msg');
                 return;
             }
-            if (require('./routes/authorization').checkLogin(session.passport.user) && callback) {
+            if (authModule.checkLogin(session.passport.user) && callback) {
                 callback(data, session.passport.user);
             } else {
                 socket.emit('authorization_faild', 'msg');
@@ -27,19 +31,26 @@ var checkAuthorization = function (sessionID, callback, data) {
         });
 }
 
-router.post('/login', require('./routes/authorization').login);
-router.post('/logout', require('./routes/authorization').logout);
-router.get('/auth/check', require('./routes/authorization').checkLoginRest);
-router.post('/create/account', require('./routes/authorization').createNewAccount);
-router.get('/user/info', require('./routes/profile').getUserProfile);
-router.post('/profile/avatar', multipartMiddleware, require('./routes/profile').setAvatar);
+router.post('/login', authModule.login);
+router.post('/logout', authModule.logout);
+router.get('/auth/check', authModule.checkLoginRest);
+router.post('/create/account', authModule.createNewAccount);
+router.get('/user/info', profileModule.getUserProfile);
+router.post('/profile/avatar', multipartMiddleware, profileModule.setAvatar);
 
-router.get('/google', require('./routes/profile').googleGetUrl);
-router.put('/google/update', require('./routes/profile').googleUpdateCurrentUser);
-router.get('/google/authorization', require('./routes/profile').googleAccessToken);
+router.get('/google', profileModule.googleGetUrl);
+router.put('/google/update', profileModule.googleUpdateCurrentUser);
+router.get('/google/authorization', profileModule.googleAccessToken);
 
-router.post('/google/message/threads', require('./routes/google_data').getMessageThreads);
-router.get('/google/message/labels', require('./routes/google_data').getMessageLabels);
+router.post('/google/message/threads', googleDataModule.getMessageThreads);
+router.get('/google/message/labels', googleDataModule.getMessageLabels);
+router.post('/google/message/send', googleDataModule.sendMessage);
+
+router.get('/google/thread/:id', googleDataModule.getMessageThread);
+router.put('/thread/label/toggle', googleDataModule.toggleThreadLabel);
+router.post('/thread/list/delete', googleDataModule.removeThreads);
+
+router.get('/calendar/list', googleDataModule.getCalendars);
 
 module.exports = {
     socket: function (server) {

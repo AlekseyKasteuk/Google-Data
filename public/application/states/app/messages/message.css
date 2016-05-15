@@ -1,0 +1,74 @@
+.message-new-form {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    max-width: 450px;
+    z-index: 1024;
+    background-color: white;
+}
+
+.message-new-form div.close-panel {
+    background-color: #f0f0f0;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 0;
+}
+
+.new-message-subject {
+    margin-bottom: -20px;
+    width: 100%;
+}
+
+.new-message-title-panel {
+    border: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 0;
+}
+
+.new-message-send-container {
+    border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+md-content.messages-action-container {
+    flex-shrink: 0;
+    max-height: 50px;
+    min-height: 50px;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 1px;
+}
+
+.message-line {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    font-size: 12.8px !important;
+    white-space: nowrap;
+}
+
+.message-line .messages-from-to {
+    max-width: 200px;
+    min-width: 200px;
+    width: 200px;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+md-list .messages-list * {
+    font-size: 12.8px !important;
+}
+
+.message-page-container md-checkbox {
+    margin: 0;
+}
+
+.unread-message .messages-from-to, .unread-message .message-line-subject {
+    font-weight: bold;
+}
+
+.messages-control {
+    width: 30px !important;
+    min-width: 0 !important;
+}

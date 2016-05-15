@@ -1,0 +1,25 @@
+<md-sidenav md-is-locked-open="$mdMedia('gt-xs')" class="md-whiteframe-4dp" style="width: 200px;" message-type-choice></md-sidenav>
+<md-content flex>
+    <div class="md-padding md-whiteframe-1dp">
+        <h3 ng-bind="thread.messages[0].payload.headers.subject"></h3>
+    </div>
+    <md-list>
+        <md-list-item ng-repeat="message in thread.messages">
+            <div style="width: 100%;" class="md-padding">
+                <div class="message-custom-header" layout="row" style="margin-bottom: 20px;">
+                    <div layout="row" layout-align="start center">
+                        <div style="margin-right: 5px;"><i class="fa fa-user"></i></div>
+                        <div style="font-weight: bold; margin-right: 5px;" ng-bind="message.payload.headers.from.name"></div>
+                        <div style="color: #555;"> <{{ message.payload.headers.from.email }}> </div>
+                    </div>
+                    <div layout="row" style="margin-left: 10px;" layout-align="start center">
+                        <div style="margin-right: 5px;"><i class="fa fa-calendar"></i></div>
+                        <div style="font-size: 11px; color: #555;" ng-bind="message.payload.headers.date"></div>
+                    </div>
+                </div>
+                <div style="width: 100%;" ng-bind-html="message.payload.parts.body.data | html"></div>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-list>
+</md-content>

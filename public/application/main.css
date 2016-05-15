@@ -3,3 +3,13 @@
     outline: none;
 
 }
+
+.application-subheader {
+    padding: 10px 20px;
+}
+
+.application-subheader a {
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}

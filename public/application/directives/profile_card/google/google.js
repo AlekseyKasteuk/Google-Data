@@ -27,11 +27,14 @@ app.directive('profileCardGoogle', ['$mdDialog', '$window', 'profileService', fu
             });
 
             function getInfo() {
+                $scope.isSpinner = true;
                 profileService.getProfileInfo('google').success(function (users) {
                     console.log(users);
                     $scope.users = users;
                 }).error(function () {
 
+                }).finally(function () {
+                    $scope.isSpinner = false;
                 });
             }
 

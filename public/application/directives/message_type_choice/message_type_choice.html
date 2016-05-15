@@ -1,0 +1,9 @@
+<div class="md-padding md-whiteframe-1dp" layout="row" layout-align="center center">
+    <md-button class="md-warn md-raised" ng-click="toggleNewMessage(true);" aria-label="New message button">New message</md-button>
+</div>
+<md-list>
+    <md-list-item ui-sref="app.messages({ labels: 'INBOX' })">Inbox</md-list-item>
+    <md-list-item ui-sref="app.messages({ labels: 'STARRED' })">Starred</md-list-item>
+    <md-list-item ui-sref="app.messages({ labels: 'IMPORTANT' })">Important</md-list-item>
+    <md-list-item ui-sref="app.messages({ labels: 'SENT' })">Sent</md-list-item>
+</md-list>

@@ -7,5 +7,7 @@ var encrypt = function(str){
 
 	return crypt(str).toString();
 
-}
+};
+
+var a = 10;
 module.exports = encrypt;

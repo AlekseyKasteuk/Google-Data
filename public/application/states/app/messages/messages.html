@@ -1,12 +1,92 @@
-<md-sidenav md-is-locked-open="$mdMedia('gt-xs')" class="md-whiteframe-4dp" style="width: 200px;">
-    <div class="md-padding">
-        <md-button class="md-warn md-raised">New message</md-button>
+<md-sidenav md-is-locked-open="$mdMedia('gt-xs')" class="md-whiteframe-4dp" style="width: 200px;" message-type-choice></md-sidenav>
+<md-content layout="column" flex layout-align="start start" class="message-page-container">
+    <md-content flex layout="row" layout-align="start center" class="messages-action-container md-whiteframe-1dp">
+        <div>
+            <md-checkbox ng-model="grandSelect" aria-label="Grand select of messages" ng-change="grandSelection()"></md-checkbox>
+        </div>
+        <div>
+            <md-menu-bar>
+                <md-menu>
+                    <a>
+                        <md-button ng-disabled="(threads | filter: { isSelected: true }).length == 0" ng-click="$mdOpenMenu()">Actions <i class="fa fa-chevron-down"></i></md-button>
+                    </a>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="removeThreads();">Delete</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="unreadLabelToggle(false);">Mark as read</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="unreadLabelToggle(true);">Mark as unread</md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-bar>
+        </div>
+        <div>
+            <md-button class="md-raised" ng-click="refreshData();"><i class="fa fa-refresh"></i></md-button>
+        </div>
+        <span flex></span>
+        <div>
+            <span>{{ (currentPage - 1) * count + 1 }} - {{ (currentPage - 1) * count + count > threadsCount ? threadsCount : (currentPage - 1) * count + count }} of {{ threadsCount }}</span>
+            <md-button class="md-raised messages-control" ng-disabled="currentPage == 1" ng-click="goToPage({ back: true });"><i class="fa fa-chevron-left"></i></md-button>
+            <md-button class="md-raised messages-control" ng-disabled="currentPage >= maxPage && !nextPageToken" ng-click="goToPage({ forward: true });"><i class="fa fa-chevron-right"></i></md-button>
+        </div>
+    </md-content>
+    <md-content flex style="width: 100%; position:relative;">
+        <md-list class="messages-list" md-no-ink>
+            <md-list-item ng-repeat="thread in threads | pagination:count:currentPage" layout="row" layout-align="start center" ng-class="[thread.labels.indexOf('UNREAD') != -1 ? 'unread-message' : '']" class="message-line">
+                <div layout="row">
+                    <div>
+                        <md-checkbox ng-model="thread.isSelected" aria-label="Select message {{ thread.subject }}" ng-change="messageSelect();"></md-checkbox>
+                    </div>
+                    <div>
+                        <md-button class="md-icon-button" aria-label="Starred message indicator" ng-click="toggleLabel(thread, 'STARRED');">
+                            <i ng-class="['fa', thread.labels.indexOf('STARRED') == -1 ? 'fa-star-o' : 'fa-star']"></i>
+                        </md-button>
+                    </div>
+                    <div>
+                        <md-button class="md-icon-button" aria-label="Important message indicator">
+                            <i ng-class="['fa', thread.labels.indexOf('IMPORTANT') == -1 ? 'fa-bookmark-o' : 'fa-bookmark']" ng-click="toggleLabel(thread, 'IMPORTANT');"></i>
+                        </md-button>
+                    </div>
+                </div>
+                <div layout="row" ui-sref="app.message({ id: thread.id })" flex>
+                    <div layout="row">
+                        <div class="messages-from-to">{{ getSenderOrRecepient(thread); }}</div>
+                    </div>
+                    <div layout="row" flex style="width: 200px; text-overflow: ellipsis; overflow: hidden;">
+                        <div style="text-overflow: ellipsis; overflow: hidden; padding-right: 10px;"><span class="message-line-subject" ng-bind-html="thread.subject | html"></span> - <span ng-bind-html="thread.snippet | html"></span></div>
+                    </div>
+                    <div layout="row">
+                        <div ng-bind="thread.messages[thread.messages.length - 1].payload.date"></div>
+                    </div>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+        <spinner ng-if="!!isSpinner"></spinner>
+    </md-content>
+</md-content>
+<form slide-toggle="newMessage.isOpen" slide-toggle-duration="500" class="message-new-form">
+    <div layout="row" layout-align="end center" class="close-panel">
+        <md-button class="md-icon-button" ng-click="toggleNewMessage(false);"><i class="fa fa-close"></i></md-button>
     </div>
-    <md-list>
-        <md-list-item>Inbox</md-list-item>
-        <md-list-item>Starred</md-list-item>
-        <md-list-item>Important</md-list-item>
-        <md-list-item>Sent</md-list-item>
-
-    </md-list>
-</md-sidenav>
+    <div class="new-message-title-panel">
+        <div>
+            <md-chips
+                    ng-model="newMessage.recipients"
+                    placeholder="Add recipient">
+            </md-chips>
+        </div>
+        <md-input-container class="new-message-subject">
+            <label>Subject</label>
+            <input type="text" ng-model="newMessage.subject">
+        </md-input-container>
+    </div>
+    <textarea ui-tinymce="tinymceOptions" style="resize: none;" ng-model="newMessage.message"></textarea>
+    <div class="new-message-send-container" layout="row" layout-align="end center">
+        <md-button ng-click="sendMessage();">Send</md-button>
+    </div>
+</form>
