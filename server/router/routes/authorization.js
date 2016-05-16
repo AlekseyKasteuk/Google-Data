@@ -61,7 +61,7 @@ module.exports.loginCheck = function (req, res, next) {
 			return next();
 		})
 	} catch (e) {
-		if (req.url == '/login') {
+		if (['/login', '/create/account'].indexOf(req.url) > -1) {
 			return next()
 		}
 		res.status(401).send('Authorization failed');

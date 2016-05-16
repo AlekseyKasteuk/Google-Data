@@ -588,8 +588,31 @@ module.exports = {
                 })
             },
             function (response, done) {
-                var query = "SELECT ";
-                done(null, response);
+                var query = "SELECT id, name, color FROM Calendar WHERE owner_id = ?";
+                connection.query(query, [req.session.passport.user.id], function (err, calendars) {
+                    if (err) {
+                        response.inner = {
+                            calendars: [],
+                            events: []
+                        };
+                        done(null, response); return;
+                    }
+                    response.inner = {
+                        calendars: calendars,
+                        events: []
+                    };
+                    query = "SELECT * FROM Event WHERE calendar_id IN (?)";
+                    connection.query(query, calendars.map(function (cal) {
+                        return cal.id;
+                    }), function (err, events) {
+                        if (err) {
+                            done(null, response); return;
+                            return;
+                        }
+                        response.inner.events = events;
+                        done(null, response);
+                    });
+                });
             }
         ], function (err, result) {
             if ( err ) { return next(err); }
