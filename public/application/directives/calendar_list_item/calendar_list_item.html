@@ -1,0 +1,10 @@
+<div class="section-header" ng-click="isOpen = !isOpen">{{calendarSection}}</div>
+
+<div slide-toggle="isOpen" slide-toggle-duration="50" slide-toggle-show-on-start="true">
+
+    <div flex layout="row" layout-align="start center" style="padding: 5px; word-break: break-word;" ng-repeat="calendar in calendarListItem">
+        <div style="height: 10px; width: 10px; margin-right: 5px;" ng-style="{ backgroundColor: calendar.backgroundColor }"></div>
+        <div ng-bind="calendar.summary"></div>
+    </div>
+
+</div>

@@ -9,6 +9,9 @@ app.factory('profileService', ['$http', function ($http) {
         updateCurrentGoogleAccount: function (id) {
             console.log(id);
             return $http.put('/google/update', {id : id});
+        },
+        updateInternalProfile: function (data) {
+            return $http.put('/profile/internal/update', data);
         }
     }
 }])

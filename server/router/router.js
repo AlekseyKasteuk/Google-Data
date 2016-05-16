@@ -37,6 +37,7 @@ router.get('/auth/check', authModule.checkLoginRest);
 router.post('/create/account', authModule.createNewAccount);
 router.get('/user/info', profileModule.getUserProfile);
 router.post('/profile/avatar', multipartMiddleware, profileModule.setAvatar);
+router.put('/profile/internal/update', profileModule.updateInternalProfile);
 
 router.get('/google', profileModule.googleGetUrl);
 router.put('/google/update', profileModule.googleUpdateCurrentUser);

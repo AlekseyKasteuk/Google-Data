@@ -1,9 +1,11 @@
 /**
  * Created by alexeykastyuk on 5/14/16.
  */
-app.controller('CalendarCtrl', ['$scope', 'calendarService', 'uiCalendarConfig', function ($scope, calendarService, uiCalendarConfig) {
+app.controller('CalendarCtrl', ['$scope', 'calendarService', 'uiCalendarConfig', '$compile', function ($scope, calendarService, uiCalendarConfig, $compile) {
 
-    $scope.calendars = {};
+    $scope.calendars = {
+        google: []
+    };
     $scope.events = [];
     $scope.eventSources = [$scope.events];
 
@@ -25,6 +27,12 @@ app.controller('CalendarCtrl', ['$scope', 'calendarService', 'uiCalendarConfig',
                     });
 
                 });
+            },
+            eventRender: function (event, element, view) {
+                console.log('Event Render');
+                element.attr({'tooltip': event.title,
+                             'tooltip-append-to-body': true});
+                $compile(element)($scope);
             }
         }
     };

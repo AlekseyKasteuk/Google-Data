@@ -76,3 +76,12 @@ module.exports.googleUpdateCurrentUser = function (req, res, next) {
         }
     });
 };
+
+module.exports.updateInternalProfile = function (req, res, next) {
+    var query = "UPDATE User SET first_name = ?, last_name = ?, birth_date = ?, email = ? WHERE username = ?";
+
+    connection.query(query, [req.body.first_name, req.body.last_name, req.body.birth_date, req.body.email, req.session.passport.user.username], function (err, result) {
+        console.log(err, result);
+        res.status(200).send();
+    });
+};

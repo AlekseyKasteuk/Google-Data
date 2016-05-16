@@ -14,8 +14,8 @@ var RRule = require('rrule').RRule;
 
 var getGoogleCredentials = function (done) {
     connection.query(googleCredentialsQuery, function (err, data) {
-        if (err || !data) {  return done(true); }
-        if (!data.length) {  return done(true); }
+        if (err || !data) {  return done('getGoogleCredentials Error: ' + err); }
+        if (!data.length) {  return done('getGoogleCredentials Error: ' + err); }
         data = data[0];
         done(null, data);
     });
@@ -26,8 +26,8 @@ var getExternalAccount = function (username) {
         var query = "SELECT access_token, refresh_token, id FROM google_data.get_user_external_accounts_info " +
                         "WHERE username = ? and is_current = 1 LIMIT 1";
         connection.query(query, [username], function (err, credential) {
-            if (err || !credential) { return done(true); }
-            if (!credential.length) { return done(true); }
+            if (err || !credential) { return done('getExternalAccount Error: ' + err); }
+            if (!credential.length) { return done('getExternalAccount Error: ' + err); }
             credential = credential[0];
             done(null, main, credential);
         });
@@ -40,10 +40,10 @@ var refreshAccessToken = function (main, credential, done) {
         refresh_token: credential.refresh_token
     });
     oauth2Client.refreshAccessToken(function(err, token) {
-        if (err || !token) { return done(true); }
+        if (err || !token) { return done('refreshAccessToken Error: ' + err); }
         var update = "UPDATE External_Account SET access_token = ?, refresh_token = ? WHERE id = ?";
         connection.query(update, [token.access_token, token.refresh_token, credential.id], function (err) {
-            if (err) { return done(true); }
+            if (err) { return done('refreshAccessToken Error: ' + err); }
             done(null, main, { access_token: token.access_token, refresh_token: token.refresh_token });
         });
     });
@@ -77,7 +77,7 @@ var makeMessageBody = function (to, from, subject, message) {
 var getAllThreads = function (count, pageToken, oauth2Client, result, labels, done) {
     google.gmail('v1').users.threads.list({ userId: 'me', auth: oauth2Client, labelIds: labels, pageToken: pageToken, maxResults: 100000 }, function (err, res) {
         if (!!err) {
-            done(err);
+            done('getAllThreads Error: ' + err);
         } else {
             count += !!res.threads ? res.threads.length : 0;
             if (!res.nextPageToken) {
@@ -105,7 +105,7 @@ module.exports = {
                 });
                 google.gmail('v1').users.threads.list({ userId: 'me', auth: oauth2Client, labelIds: req.body.labels, pageToken: req.body.pageToken, maxResults: 50 }, function (err, result) {
                     if (!!err) {
-                        done(err);
+                        done('getMessageThreads Error: ' + err);
                     } else {
                         done(null, oauth2Client, result);
                     }
@@ -277,7 +277,7 @@ module.exports = {
                     id: req.params.id,
                     auth: oauth2Client
                 }, function (err, result) {
-                    if (!!err) { return done(err); }
+                    if (!!err) { return done('getMessageThread Error: ' + err); }
                     try {
                         if (result && result.messages) {
                             result.messages = result.messages.map(function (msg) {
@@ -431,10 +431,12 @@ module.exports = {
                 batch.setAuth(oauth2Client);
 
                 googleCalendars.items.forEach(function (calendar) {
+                    //batch.add(google.calendar('v3').events.list({calendarId: encodeURIComponent(calendar.id), googleBatch: true}));
                     batch.add(google.calendar('v3').events.list({calendarId: encodeURIComponent(calendar.id), timeMax: req.query.end, timeMin: req.query.start, googleBatch: true}));
                 });
 
                 batch.exec(function (err, responses, errorDetails) {
+                    console.log(err, errorDetails);
                     if (responses) {
 
                         var events = [];
@@ -453,29 +455,14 @@ module.exports = {
                             var insteardEvents = {};
                             var recurrenceEvents = {};
                             evts.body.items.forEach(function (item) {
+                                item.backgroundColor = googleCalendars.items[index].backgroundColor;
+                                item.editable = googleCalendars.items[index].accessRole == 'owner';
                                 if (item.status == "cancelled") {
 
                                     var startTime = item.originalStartTime.dateTime ? moment(item.originalStartTime.dateTime) : moment(item.originalStartTime.date);
-                                    var endTime = item.originalEndTime.dateTime ? moment(item.originalEndTime.dateTime) : moment(item.originalEndTime.date);
+                                    var currentDate = _startDate.clone();
 
-                                    var dates = (function () {
-
-                                        var dates = [];
-
-                                        var currentDate = _startDate.clone();
-                                        var lastDate = _endDate.clone();
-
-                                        var start = startTime.format('YYYY-MM-DD') >= currentDate.format('YYYY-MM-DD') ? startTime : currentDate;
-                                        var end = endTime.format('YYYY-MM-DD') <= lastDate.format('YYYY-MM-DD') ? endTime : lastDate;
-
-                                        var diff = end.diff(start, 'days');
-
-                                        for (var i = 0; i <= diff; i++) {
-                                            dates.push(start.clone().add(i, 'day').format('YYYY-MM-DD'));
-                                        }
-
-                                        return dates;
-                                    })();
+                                    var dates = [startTime.format('YYYY-MM-DD') >= currentDate.format('YYYY-MM-DD') ? startTime : currentDate];
 
                                     if (excludeEvents[item.recurringEventId]) {
                                         excludeEvents[item.recurringEventId].concat(dates);
@@ -484,56 +471,41 @@ module.exports = {
                                     }
                                 } else {
                                     if (item.recurrence) {
-                                        var rule = RRule.fromString(item.recurrence[0]);
+                                        console.log('Recurrence', item.recurrence);
+                                        var rule = new RRule(RRule.parseString(item.recurrence[0].replace(/RRULE:/g, '')));
                                         var startTime = item.start.dateTime ? item.start.dateTime : item.start.date;
                                         rule.options.dtstart = moment(startTime)._d;
                                         var recurrenceDays = rule.between(_startDate.toDate(), _endDate.toDate());
                                         recurrenceDays.forEach(function (t) {
                                             var time = moment(t).format('YYYY-MM-DD');
+                                            var tmpItem = JSON.parse(JSON.stringify(item));
+                                            var dates = {
+                                                start: item.start.date ? item.start.date : item.start.dateTime,
+                                                end: item.end.date ? item.end.date : item.end.dateTime
+                                            }
+                                            var diff = moment(dates.end).diff(moment(dates.start));
+                                            tmpItem.start = tmpItem.start.date ? { date: moment(t).format('YYYY-MM-DD') } : { dateTime: moment(t).format('YYYY-MM-DD HH:mm:ss') };
+                                            tmpItem.end = tmpItem.end.date ? { date: moment(t).add(diff).format('YYYY-MM-DD') } : { dateTime: moment(t).add(diff).format('YYYY-MM-DD HH:mm:ss') };
                                             if (recurrenceEvents[time]) {
-                                                recurrenceEvents[time].push(item);
+                                                recurrenceEvents[time].push(tmpItem);
                                             } else {
-                                                recurrenceEvents[time] = [item];
+                                                recurrenceEvents[time] = [tmpItem];
                                             }
                                         });
                                     } else {
                                         var startTime = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
-                                        var endTime = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date);
 
                                         var formattedItems = (function () {
                                             var items = [];
 
                                             var currentDate = _startDate.clone();
-                                            var lastDate = _endDate.clone();
 
                                             var start = startTime.format('YYYY-MM-DD') >= currentDate.format('YYYY-MM-DD') ? startTime : currentDate;
-                                            var end = endTime.format('YYYY-MM-DD') <= lastDate.format('YYYY-MM-DD') ? endTime : lastDate;
 
-                                            var diff = end.diff(start, 'days');
+                                            if (item.start.date) { item.start.date = start.format('YYYY-MM-DD') }
+                                            else { item.start.dateTime = start.format('YYYY-MM-DD HH:mm:ss') }
 
-                                            for (var i = 0; i <= diff; i++) {
-
-                                                var tmpItem = JSON.parse(JSON.stringify(item));
-
-                                                var tmpStartDate = i == 0 ? start.clone() : start.clone().add(i, 'day').hours(0).minutes(0).seconds(0);
-                                                var tmpEndDate = i == diff ? end.clone() : end.clone().add(i, 'day').hours(23).minutes(59).seconds(59);
-
-                                                if (tmpItem.start.date) {
-                                                    tmpItem.start.date = tmpStartDate.format('YYYY-MM-DD');
-                                                }
-                                                else {
-                                                    if (!!tmpStartDate.diff(startTime) && !!tmpEndDate.diff(endTime)) {
-                                                        delete tmpItem.start.dateTime;
-                                                        tmpItem.start.date = tmpStartDate.format('YYYY-MM-DD');
-                                                    } else {
-                                                        tmpItem.start.dateTime = tmpStartDate.format('YYYY-MM-DD HH:mm:ss');
-                                                        tmpItem.end.dateTime = tmpEndDate.format('YYYY-MM-DD HH:mm:ss');
-                                                    }
-                                                }
-                                                items.push(tmpItem);
-                                            }
-
-                                            return items;
+                                            return [item];
                                         })();
 
                                         formattedItems.forEach(function (item) {
@@ -591,9 +563,14 @@ module.exports = {
                                 end = e.end.date ? moment(e.end.date) : moment(e.end.dateTime);
                             return {
                                 data: e,
-                                start: start.toDate(),
-                                end: end.toDate(),
-                                title: e.summary
+                                start: start.format(),
+                                end: end.format(),
+                                allDay: e.start.date,
+                                title: e.summary,
+                                backgroundColor: e.backgroundColor,
+                                textColor: '#000',
+                                borderColor: '#fff',
+                                editable: !!e.editable
                             }
                         });
 
@@ -605,16 +582,17 @@ module.exports = {
                         });
                     }
                     else {
-                        if (err) { done(err); }
+                        if (err) { done('getCalendars Error: ' + err); }
                         else { done('No responses') }
                     }
                 })
             },
             function (response, done) {
-                //var query = "SELECT "
+                var query = "SELECT ";
                 done(null, response);
             }
         ], function (err, result) {
+            if ( err ) { return next(err); }
             res.status(200).send(result);
         })
     },

@@ -3,6 +3,4 @@
  */
 app.controller('ProfileCtrl', ['$scope', 'profileService', '$mdDialog', '$window', 'uploadFileService', function($scope, profileService, $mdDialog, $window, uploadFileService) {
 
-
-
 }]);

@@ -56,7 +56,6 @@ app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationP
 
 app.run(['$rootScope', '$state', '$stateParams', 'authService', function ($rootScope, $state, $stateParams, authService) {
     $rootScope.getRange = function (type, configs) {
-        console.log(type, configs);
         configs = !!configs ? configs : {};
         if (type == 'birth year') {
             return _.range(moment().year(), moment().year() - 120);

@@ -1,17 +1,9 @@
-<md-content flex class="md-padding" layout="row">
-    <div>
-        <div>
-            <md-button ng-click="addEvent();">Add event</md-button>
-        </div>
-        <div>Google</div>
-        <div>
-            <md-list>
-                <md-list-item flex layout="row" ng-repeat="calendar in calendars.google">
-                    <div style="height: 10px; width: 10px;" ng-style="{ backgroundColor: calendar.backgroundColor }"></div>
-                    <div ng-bind="calendar.summary"></div>
-                </md-list-item>
-            </md-list>
-        </div>
+<md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp" style="width: 200px;" layout="column" layout-align="space-between stretch">
+    <div class="md-padding">
+        <md-button class="md-raised md-warn" style="width: 100%; margin: 0;" ng-click="addEvent();">Add event</md-button>
     </div>
+    <div calendar-list-item="calendars.google" calendar-section="Google"></div>
+</md-sidenav>
+<md-content flex class="md-padding" layout="row">
     <div ui-calendar="uiConfig.calendar" ng-model="eventSources" class="calendar" flex></div>
 </md-content>

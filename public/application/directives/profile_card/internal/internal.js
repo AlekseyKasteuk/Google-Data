@@ -11,6 +11,12 @@ app.directive('profileCardInternal', ['$mdDialog', 'profileService', function($m
             function getInfo() {
                 profileService.getProfileInfo('internal').success(function (user) {
                     $scope.user = user;
+                    if (user.birth_date) {
+                        $scope.user.birthYear = moment(user.birth_date).local().year();
+                        $scope.user.birthMonth = moment.months(moment(user.birth_date).local().month());
+                        $scope.user.birthDate = moment(user.birth_date).local().date();
+                    }
+                    console.log(user);
                 }).error(function () {
 
                 });
@@ -32,6 +38,17 @@ app.directive('profileCardInternal', ['$mdDialog', 'profileService', function($m
                     getInfo();
                 })
             };
+
+            $scope.updateProfile = function () {
+
+                if (!!$scope.user.birthYear && !!$scope.user.birthMonth && !!$scope.user.birthDate) {
+                    var user = $scope.user;
+                    $scope.user.birth_date = moment([user.birthDate, user.birthMonth, user.birthYear].join(' ')).format('YYYY-MM-DD');
+                }
+                profileService.updateInternalProfile($scope.user).success(function () {
+
+                });
+            }
         }
     }
 }]);

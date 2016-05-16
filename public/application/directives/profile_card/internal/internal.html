@@ -21,13 +21,13 @@
         <div flex layout="row" layout-align="center center">
             <md-input-container>
                 <label>First name</label>
-                <input>
+                <input ng-model="user.first_name">
             </md-input-container>
         </div>
         <div flex layout="row" layout-align="center center">
             <md-input-container>
                 <label>Last name</label>
-                <input>
+                <input ng-model="user.last_name">
             </md-input-container>
         </div>
     </div>
@@ -35,28 +35,31 @@
         <div flex layout="row" layout-align="center center">
             <md-input-container>
                 <label>Birth year</label>
-                <md-select ng-model="birthYear">
+                <md-select ng-model="user.birthYear">
                     <md-option ng-repeat="i in $root.getRange('birth year') track by $index" ng-value="i">{{i}}</md-option>
                 </md-select>
             </md-input-container>
             <md-input-container>
                 <label>Birth month</label>
-                <md-select ng-model="birthMonth">
+                <md-select ng-model="user.birthMonth">
                     <md-option ng-repeat="i in $root.getRange('birth month') track by $index" ng-value="i">{{i}}</md-option>
                 </md-select>
             </md-input-container>
             <md-input-container>
                 <label>Birth date</label>
-                <md-select ng-model="birthDate">
-                    <md-option ng-repeat="i in $root.getRange('birth date', { year: birthYear, month: birthMonth }) track by $index" ng-value="i">{{i}}</md-option>
+                <md-select ng-model="user.birthDate">
+                    <md-option ng-repeat="i in $root.getRange('birth date', { year: user.birthYear, month: user.birthMonth }) track by $index" ng-value="i">{{i}}</md-option>
                 </md-select>
             </md-input-container>
         </div>
         <div flex layout="row" layout-align="center center">
             <md-input-container>
                 <label>Email</label>
-                <input>
+                <input ng-model="user.email">
             </md-input-container>
         </div>
+    </div>
+    <div layout-align="center center" layout="row">
+        <md-button ng-click="updateProfile()" class="md-primary md-raised">Update profile</md-button>
     </div>
 </div>
