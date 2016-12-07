@@ -6,7 +6,8 @@ app.directive('calendarListItem', [function () {
         restrict: 'AE',
         scope: {
             calendarListItem: '=',
-            calendarSection: '@'
+            calendarSection: '@',
+            calendarCreateAction: '='
         },
         templateUrl: '/application/directives/calendar_list_item/calendar_list_item.html'
     }

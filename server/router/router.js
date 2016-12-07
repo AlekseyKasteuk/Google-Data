@@ -15,6 +15,7 @@ var empty = function () {};
 var authModule = require('./routes/authorization');
 var profileModule = require('./routes/profile');
 var googleDataModule = require('./routes/google_data');
+var innerCalendarModule = require('./routes/inner_calendars');
 
 var checkAuthorization = function (sessionID, callback, data) {
     new SessionStore(configs.database)
@@ -52,6 +53,11 @@ router.put('/thread/label/toggle', googleDataModule.toggleThreadLabel);
 router.post('/thread/list/delete', googleDataModule.removeThreads);
 
 router.get('/calendar/list', googleDataModule.getCalendars);
+
+router.post('/calendar/inner/create', innerCalendarModule.createCalendar);
+
+
+router.post('/events/internal/create', innerCalendarModule.createEvent);
 
 module.exports = {
     socket: function (server) {

@@ -1,0 +1,85 @@
+<md-dialog aria-label="Create inner calendar" ng-cloak>
+    <form ng-submit="save();">
+        <md-toolbar>
+            <div class="md-toolbar-tools md-whiteframe-2dp">
+                <h2>Create inner calendar</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-font-icon="fa fa-times" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+
+            <div class="md-dialog-content">
+
+                <div layout="row">
+                    <md-input-container>
+                        <label>Calendar type</label>
+                        <md-select ng-model="calendarType">
+                            <md-option value="internal" selected>Internal</md-option>
+                            <md-option value="google">Google</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container ng-if="calendarType == 'internal'">
+                        <label>Calendar name</label>
+                        <md-select ng-model="event.calendar">
+                            <md-option ng-repeat="calendar in calendarConfigs.internalCalendars" selected="$first" ng-value="calendar">
+                                <span style="height: 10px; width: 10px; margin-right: 5px; display: inline-block;" ng-style="{ backgroundColor: calendar.backgroundColor }"></span>
+                                <span ng-bind="calendar.summary"></span>
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container ng-if="calendarType == 'google'">
+                        <label>Calendar name</label>
+                        <md-select ng-model="event.calendar">
+                            <md-option ng-repeat="calendar in calendarConfigs.googleCalendars" selected="$first" ng-value="calendar">
+                                <span style="height: 10px; width: 10px; margin-right: 5px; display: inline-block;" ng-style="{ backgroundColor: calendar.backgroundColor }"></span>
+                                <span ng-bind="calendar.summary"></span>
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-input-container style="width: 100%;">
+                        <label>Name</label>
+                        <input ng-model="event.summary">
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-align="center start" style="white-space: nowrap;">
+                    <md-input-container>
+                        <label>Start</label>
+                        <input ng-model="event.start" type="date" ng-if="!!event.allDay">
+                        <input ng-model="event.start" type="datetime-local" ng-if="!event.allDay">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>End</label>
+                        <input ng-model="event.end" type="date" ng-if="!!event.allDay">
+                        <input ng-model="event.end" type="datetime-local" ng-if="!event.allDay">
+                    </md-input-container>
+                    <div>
+                        <md-checkbox ng-model="event.allDay" style="margin: 0;;">All day</md-checkbox>
+                    </div>
+                </div>
+                <div>
+                    <md-input-container style="width: 100%;">
+                        <label>Description</label>
+                        <textarea ng-model="event.description"></textarea>
+                    </md-input-container>
+                </div>
+
+            </div>
+
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel();">Cancel</md-button>
+            <input type="submit" class="md-button md-raised md-primary"style="margin-right:20px;" value="Create" />
+        </md-dialog-actions>
+    </form>
+    <spinner ng-if="enableSpinner"></spinner>
+</md-dialog>

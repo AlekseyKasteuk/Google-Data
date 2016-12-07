@@ -10,4 +10,4 @@ module.exports = {
 		multipleStatements: true
 	},
 	profile_redirect_url: '/#/profile'
-}
+};

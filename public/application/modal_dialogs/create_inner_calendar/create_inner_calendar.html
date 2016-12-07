@@ -1,0 +1,35 @@
+<md-dialog aria-label="Create inner calendar" ng-cloak>
+    <form ng-submit="create();">
+        <md-toolbar>
+            <div class="md-toolbar-tools md-whiteframe-2dp">
+                <h2>Create inner calendar</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-font-icon="fa fa-times" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div style="padding: 10px;">
+                <md-input-container style="width: 100%; box-sizing: border-box;">
+                    <label>Name</label>
+                    <md-icon md-font-icon="fa fa-2x fa-info"></md-icon>
+                    <input ng-model="calendar.name" name="name" required>
+                </md-input-container>
+            </div>
+            <div style="padding: 10px;">
+                <md-input-container style="width: 100%; box-sizing: border-box;">
+                    <label>Color</label>
+                    <md-icon md-font-icon="fa fa-2x fa-paint-brush"></md-icon>
+                    <input type="color" ng-model="calendar.color" name="color" required>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel();">Cancel</md-button>
+            <input type="submit" class="md-button md-raised md-primary"style="margin-right:20px;" value="Create" />
+        </md-dialog-actions>
+    </form>
+    <spinner ng-if="enableSpinner"></spinner>
+</md-dialog>

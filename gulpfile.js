@@ -29,3 +29,9 @@ gulp.task('default', function () {
 
     gulp.watch(['server.js', 'server/**/*'], [server.run])
 });
+
+gulp.task('concat_js', function () {
+     return gulp.src('public/application/**/*.js')
+            .pipe(concat('scripts.concat.js'))
+            .pipe(gulp.dest('public/dist/'));
+});

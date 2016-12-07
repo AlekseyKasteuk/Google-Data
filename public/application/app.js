@@ -16,7 +16,7 @@ app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationP
     //$httpProvider.defaults.useXDomain = true;
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/profile');
 
     $stateProvider
         .state('login', {
@@ -27,7 +27,8 @@ app.config(['$httpProvider', '$urlRouterProvider', '$stateProvider', '$locationP
         .state('app', {
             url: '/',
             templateUrl: 'application/states/app/app.html',
-            controller: 'AppCtrl'
+            controller: 'AppCtrl',
+            redirectTo: 'app.profile'
         })
         .state('app.profile', {
             url: 'profile?account',
@@ -69,8 +70,15 @@ app.run(['$rootScope', '$state', '$stateParams', 'authService', function ($rootS
         return [];
     };
 	$rootScope.$on('$stateChangeStart', function (evt, to, params) {
+
         authService.checkAuth().success(function (user) {
             $rootScope.authorizedUser = user;
+
+            if (to.redirectTo) {
+                console.log(to.redirectTo);
+                $state.go(to.redirectTo, params);
+                return;
+            }
 
 			if(to.name == 'login') {
 				$state.go('app');
@@ -80,6 +88,6 @@ app.run(['$rootScope', '$state', '$stateParams', 'authService', function ($rootS
 			if(to.name != 'login') {
 				$state.go('login');
 			}
-		})
+		});
 	});
 }]);

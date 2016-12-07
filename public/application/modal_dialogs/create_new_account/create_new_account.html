@@ -11,57 +11,61 @@
         </md-toolbar>
         <md-dialog-content>
             <form class="md-dialog-content create-account">
-                <div>
-                    <md-input-container>
-                        <label>First name</label>
-                        <md-icon md-font-icon="fa fa-2x fa-info"></md-icon>
-                        <input ng-model="user.first_name" name="first_name" required>
-                        <div ng-messages="user.first_name.$error" role="alert">
-                            <div ng-message="required">
-                                Enter first name.
+                <div layout="row">
+                    <div style="padding: 10px;">
+                        <md-input-container>
+                            <label>First name</label>
+                            <md-icon md-font-icon="fa fa-2x fa-info"></md-icon>
+                            <input ng-model="user.first_name" name="first_name" required>
+                            <div ng-messages="user.first_name.$error" role="alert">
+                                <div ng-message="required">
+                                    Enter first name.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div>
-                    <md-input-container>
-                        <label>Last name</label>
-                        <md-icon md-font-icon="fa fa-2x fa-info"></md-icon>
-                        <input ng-model="user.last_name" name="last_name" required>
-                        <div ng-messages="user.last_name.$error" role="alert">
-                            <div ng-message="required">
-                                Enter last name.
+                        </md-input-container>
+                    </div>
+                    <div style="padding: 10px;">
+                        <md-input-container>
+                            <label>Last name</label>
+                            <md-icon md-font-icon="fa fa-2x fa-info"></md-icon>
+                            <input ng-model="user.last_name" name="last_name" required>
+                            <div ng-messages="user.last_name.$error" role="alert">
+                                <div ng-message="required">
+                                    Enter last name.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
+                        </md-input-container>
+                    </div>
                 </div>
-                <div>
-                    <md-input-container>
-                        <label>Username</label>
-                        <md-icon md-font-icon="fa fa-2x fa-user"></md-icon>
-                        <input ng-model="user.username" autocomplete="nope" ng-pattern="/^[\w\._\-]{6,64}$/" minlength="6" maxlength="64" required>
-                        <div ng-messages="user.username.$error" role="alert">
-                            <div ng-message="required">Username is required</div>
-                            <div ng-message="min">Username should be more then 6 characters.</div>
-                            <div ng-message="max">Username should be less then 64 characters.</div>
-                            <div ng-message="pattern">
-                                Username should contains of letters or ._- characters.
+                <div layout="row">
+                    <div style="padding: 10px;">
+                        <md-input-container>
+                            <label>Username</label>
+                            <md-icon md-font-icon="fa fa-2x fa-user"></md-icon>
+                            <input ng-model="user.username" autocomplete="nope" ng-pattern="/^[\w\._\-]{6,64}$/" minlength="6" maxlength="64" required>
+                            <div ng-messages="user.username.$error" role="alert">
+                                <div ng-message="required">Username is required</div>
+                                <div ng-message="min">Username should be more then 6 characters.</div>
+                                <div ng-message="max">Username should be less then 64 characters.</div>
+                                <div ng-message="pattern">
+                                    Username should contains of letters or ._- characters.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div>
-                    <md-input-container>
-                        <label>Password</label>
-                        <md-icon md-font-icon="fa fa-2x fa-lock"></md-icon>
-                        <input ng-model="user.password" autocomplete="nope" type="password" minlength="8" maxlength="64" required ng-pattern="/^[\w\._\-!\?,#\$\^&@]{8,64}$/">
-                        <div ng-messages="user.passport.$error">
-                            <div ng-message="required">Password is required</div>
-                            <div ng-message="min">Password should be more then 8 characters.</div>
-                            <div ng-message="max">Password should be less then 64 characters.</div>
-                            <div ng-message="pattern">Password should contains only letters or ._-!?,#$^&@ characters.</div>
-                        </div>
-                    </md-input-container>
+                        </md-input-container>
+                    </div>
+                    <div style="padding: 10px;">
+                        <md-input-container>
+                            <label>Password</label>
+                            <md-icon md-font-icon="fa fa-2x fa-lock"></md-icon>
+                            <input ng-model="user.password" autocomplete="nope" type="password" minlength="8" maxlength="64" required ng-pattern="/^[\w\._\-!\?,#\$\^&@]{8,64}$/">
+                            <div ng-messages="user.passport.$error">
+                                <div ng-message="required">Password is required</div>
+                                <div ng-message="min">Password should be more then 8 characters.</div>
+                                <div ng-message="max">Password should be less then 64 characters.</div>
+                                <div ng-message="pattern">Password should contains only letters or ._-!?,#$^&@ characters.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
                 </div>
             </form>
         </md-dialog-content>

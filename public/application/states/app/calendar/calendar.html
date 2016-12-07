@@ -1,9 +1,12 @@
-<md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp" style="width: 200px;" layout="column" layout-align="space-between stretch">
-    <div class="md-padding">
-        <md-button class="md-raised md-warn" style="width: 100%; margin: 0;" ng-click="addEvent();">Add event</md-button>
+<md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp" style="width: 200px;" layout="column" layout-align="end stretch">
+    <!--<div class="md-padding">-->
+        <!--<md-button class="md-raised md-warn" style="width: 100%; margin: 0;" ng-click="addEvent();">Add event</md-button>-->
+    <!--</div>-->
+    <div>
+        <div calendar-list-item="calendars.internal" calendar-section="Inner" calendar-create-action="createInnerCalendar" style="border-bottom: 1px solid #555;"></div>
+        <div calendar-list-item="calendars.google" calendar-section="Google" calendar-create-action="createGoogleCalendar"></div>
     </div>
-    <div calendar-list-item="calendars.google" calendar-section="Google"></div>
 </md-sidenav>
 <md-content flex class="md-padding" layout="row">
-    <div ui-calendar="uiConfig.calendar" ng-model="eventSources" class="calendar" flex></div>
+    <div ui-calendar="uiConfig.calendar" ng-model="eventSources" class="calendar" flex calendar-today-click></div>
 </md-content>

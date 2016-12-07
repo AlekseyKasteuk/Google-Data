@@ -530,6 +530,7 @@ module.exports = {
                                     }
                                 }
                             });
+
                             for (var key in recurrenceEvents) {
                                 recurrenceEvents[key].forEach(function (e) {
                                     try {
@@ -540,6 +541,7 @@ module.exports = {
                                             }
                                         }
                                         if (insteardEvents[e.id]) {
+
                                             if (insteardEvents[e.id][key]) {
                                                 flag = false;
                                                 days[key].events.push(insteardEvents[e.id][key]);
@@ -588,7 +590,9 @@ module.exports = {
                 })
             },
             function (response, done) {
-                var query = "SELECT id, name, color FROM Calendar WHERE owner_id = ?";
+                var query = "SELECT cal.id, cal.name, cal.color FROM User_has_Calendar \
+                            INNER JOIN Calendar as cal ON User_has_Calendar.calendar_id = cal.id \
+                            WHERE user_id = ?";
                 connection.query(query, [req.session.passport.user.id], function (err, calendars) {
                     if (err) {
                         response.inner = {
@@ -598,17 +602,36 @@ module.exports = {
                         done(null, response); return;
                     }
                     response.inner = {
-                        calendars: calendars,
+                        calendars: calendars.map(function (cal) {
+                            return {
+                                backgroundColor: cal.color,
+                                summary: cal.name,
+                                id: cal.id
+                            }
+                        }),
                         events: []
                     };
-                    query = "SELECT * FROM Event WHERE calendar_id IN (?)";
-                    connection.query(query, calendars.map(function (cal) {
-                        return cal.id;
-                    }), function (err, events) {
+                    query = "SELECT * FROM Event WHERE calendar_id IN (" +
+                        calendars.map(function (cal) {
+                            return cal.id;
+                        }).join(',') +
+                        ")";
+                    connection.query(query, function (err, events) {
+                        console.log(err, events);
                         if (err) {
                             done(null, response); return;
                             return;
                         }
+                        events = events.map(function (e) {
+                            e.summary = e.title;
+                            e.allDay = e.all_day;
+                            e.start = moment(e.start).toDate();
+                            e.end = moment(e.end).toDate();
+                            e.backgroundColor = e.color;
+                            e.editable = true;
+
+                            return e;
+                        });
                         response.inner.events = events;
                         done(null, response);
                     });
